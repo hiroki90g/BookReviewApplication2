@@ -5,8 +5,14 @@ export const SignIn = () => {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-    const handleEmailChange = (e) => {setEmail(e.target.value)}
-    const handlePasswordChange = (e) => setPassword(e.target.value);
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value)
+        if(emailError) setEmailError(''); // 変更があったらエラークリア
+    }
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+        if(passwordError) setPasswordError(''); // 変更があったらエラークリア
+    }
     const onSignIn = (e) => {
         e.preventDefault(); 
         if(!email){
