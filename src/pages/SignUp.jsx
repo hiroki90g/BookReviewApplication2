@@ -1,15 +1,16 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
+import Compressor from 'compressorjs';
 
 function SignUp() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState(''); 
     const [icon, setIcon] = useState('');
-    const [iconPreview, setIconPreview] = useState(null);
+    const [iconPreviewURL, setIconPreviewURL] = useState(null);
     const [nameError, setNameError] = useState('');
     const [emailError, setEmailError] = useState('');
-    const [passwordError, setPasswordError] = useState(null);
+    const [passwordError, setPasswordError] = useState('');
     const handleNameChange = (e) => {
       setName(e.target.value);
       if(nameError) setNameError('');
@@ -25,13 +26,21 @@ function SignUp() {
     const handleIconChange = (e) => {
       if (e.target.files && e.target.files[0]) {
         const file = e.target.files[0];
-        setIcon(e.target.files[0]);
 
-        const reader = new FileReader(); // FileReaderで画像読み込む準備
-        reader.onloadend = () => {
-          setIconPreview(reader.result); // 画像プレビューをセット
-        };
-        reader.readAsDataURL(file); // ファイルをデータURLとして読み込む
+        new Compressor(file, {
+          quality: 0.6,
+          maxWidth: 800,
+          maxHeight: 800,
+          success(result) {
+            setIcon(result);
+
+            const previewURL = URL.createObjectURL(result);
+            setIconPreviewURL(previewURL);
+          },
+          error(err) {
+            console.error('アイコン画像リサイズ中にエラーが発生しました: ', err);
+          }
+        })
       }
     }
 
@@ -71,7 +80,7 @@ function SignUp() {
       <div>
       <main className="signup">
           <h2>ユーザー新規登録</h2>
-          <form className="signup-form">
+          <form className="signup-form" onSubmit={onSignUp}>
             <label className="name-label">
                 名前
                 <input 
@@ -82,7 +91,7 @@ function SignUp() {
                     onChange={handleNameChange}
                 />
             </label>
-            {emailError && <p className="error-message">{nameError}</p>}
+            {nameError && <p className="error-message">{nameError}</p>}
             <br />
             <label className="email-label">
                 メールアドレス
@@ -107,7 +116,7 @@ function SignUp() {
                     onChange={handlePasswordChange}
                 />
             </label>
-            {emailError && <p className="error-message">{passwordError}</p>}
+            {passwordError && <p className="error-message">{passwordError}</p>}
             <br />
             <label className='icon-label'>
               アイコン画像
@@ -117,12 +126,16 @@ function SignUp() {
                 onChange={handleIconChange}
               />
               {icon && <p>ファイル名: {icon.name}</p>}
-              {iconPreview && <img src={iconPreview} alt="アイコンプレビュー" style={{ width: 100, height: 100, objectFit: 'cover' }} />}
+              {iconPreviewURL && <img src={iconPreviewURL} alt="アイコンプレビュー" style={{ width: 100, height: 100, objectFit: 'cover' }}  />}
             </label>
-            {passwordError && <p className="error-message">{passwordError}</p>}
             < br />
-            <button type="submit" className="signup-button" onClick={onSignUp}>新規登録</button>
+            <button type="submit" className="signup-button">新規登録</button>
           </form>
+          <br />
+          <div>
+            ログイン画面はこちら
+          </div>
+          
       </main>
   </div>
     );
