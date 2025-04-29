@@ -12,4 +12,16 @@ describe('サインインフォームのコンポーネント', () => {
         const emailInput = screen.getByLabelText('メールアドレス');
         expect(emailInput).toBeInTheDocument();
     });
+
+    it('パスワードの入力フォームがある', () => {
+        render(<SignIn />);
+        const passwordInput = screen.getByLabelText('パスワード');
+        expect(passwordInput).toBeInTheDocument();
+    });
+
+    it('サインインボタンがある', () => {
+        render(<SignIn />);
+        const submitButton = screen.getByRole('button', { name: 'サインイン' });
+        expect(submitButton).toBeInTheDocument();
+    });
 });
