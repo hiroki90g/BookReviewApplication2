@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export const SignIn = () => {
     const [email, setEmail] = useState('');
@@ -43,23 +43,27 @@ export const SignIn = () => {
             <main className="signin">
                 <h2>サインイン</h2>
                 <form className="signin-form">
-                <label className="email-label">メールアドレス</label>
-                <input 
-                    type="email"
-                    className="email-input"
-                    required
-                    onChange={handleEmailChange}
-                />
+                <label className="email-label">
+                    メールアドレス
+                    <input 
+                        type="email"
+                        className="email-input"
+                        required
+                        onChange={handleEmailChange}
+                    />
+                </label>
                 {emailError && <p className="error-message">{emailError}</p>}
                 <br />
-                <label className="password-label">パスワード</label>
-                <input 
-                    type="password"
-                    className="password-input"
-                    required
-                    minLength="8"
-                    onChange={handlePasswordChange}
-                />
+                <label className="password-label">
+                    パスワード
+                    <input 
+                        type="password"
+                        className="password-input"
+                        required
+                        minLength="8"
+                        onChange={handlePasswordChange}
+                    />
+                </label>
                 {passwordError && <p className="error-message">{passwordError}</p>}
                 < br />
                 <button type="submit" className="signin-button" onClick={onSignIn}>サインイン</button>
