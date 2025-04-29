@@ -48,6 +48,7 @@ function SignIn () {
                     <input 
                         type="email"
                         className="email-input"
+                        value={email}
                         required
                         onChange={handleEmailChange}
                     />
@@ -59,6 +60,7 @@ function SignIn () {
                     <input 
                         type="password"
                         className="password-input"
+                        value={password}
                         required
                         minLength="8"
                         onChange={handlePasswordChange}
