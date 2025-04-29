@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export const SignIn = () => {
+function SignIn () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -72,3 +72,5 @@ export const SignIn = () => {
         </div>
     );
 };
+
+export default SignIn;

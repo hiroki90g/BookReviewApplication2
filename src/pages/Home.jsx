@@ -1,4 +1,6 @@
-export const Home = () => {
+import React from "react";
+
+function Home () {
     return (
         <div>
             <main>
@@ -7,3 +9,5 @@ export const Home = () => {
         </div>
     );
 };
+
+export default Home;
