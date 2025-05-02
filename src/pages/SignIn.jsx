@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function SignIn () {
     const [email, setEmail] = useState('');
@@ -70,6 +71,8 @@ function SignIn () {
                 < br />
                 <button type="submit" className="signin-button" onClick={onSignIn}>サインイン</button>
                 </form>
+
+                <Link to="/signup">新規登録画面はこちら</Link>
             </main>
         </div>
     );

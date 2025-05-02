@@ -13,6 +13,7 @@ function SignUp() {
     const [nameError, setNameError] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [apiError, setApiError] = useState('');
     const handleNameChange = (e) => {
       setName(e.target.value);
       if(nameError) setNameError('');
@@ -73,6 +74,7 @@ function SignUp() {
         if (icon) {
           formData.append('icon', icon);
         }
+
         try{
           const userData = {
             name: name,
@@ -90,9 +92,8 @@ function SignUp() {
             }
           );
           console.log('ユーザー情報送信結果: ', responseUser.data);
-          console.log('ユーザー情報送信結果、トークン: ', responseUser.data.token);
-          const token = responseUser.data.token;          
-
+          console.log('ユーザー情報送信結果、トークン: ', responseUser.data.token);  
+          const token = responseUser.data.token;
           if (icon) {
             const formData = new FormData();
             formData.append('icon', icon);
@@ -109,13 +110,23 @@ function SignUp() {
             );
             console.log('アイコン送信結果: ', responseIcon.data);
           }
-        } catch (error) {  
-          console.error('APIリクエスト中にエラー: ', error);
-          if (error.response) {
-            console.error('APIエラー内容:', error.response.data);
+        } catch (err) {  
+          console.error('APIリクエスト中にエラー: ', err);
+          if (err.response) {
+            console.error('APIエラー内容:', err.response.data);
+            setApiError(`エラーが発生しました：${err.response.data}`);
           } else {
-            console.error('API通信エラー:', error);
-          }
+            console.error('通信エラー:', err.message);
+          };
+          // if (err.response?.status === 400)  {
+          //   setApiError('バリデーションエラー');
+          // }
+          // if (err.response?.status === 403)  {
+          //   setApiError('認証エラー');
+          // }
+          // if (err.response?.status === 409) {
+          //   setApiError('このメールアドレスは既に使われています。');
+          // } 
         }
     }
     useEffect(() => {
@@ -185,6 +196,7 @@ function SignUp() {
             < br />
             <button type="submit" className="signup-button">新規登録</button>
           </form>
+          {apiError && <p className="error-message">{apiError}</p>}
           <br />
           <div>
             <Link to="/signin">ログイン画面はこちら</Link>
