@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Compressor from 'compressorjs';
+import { Link } from 'react-router-dom'
 
 function SignUp() {
     const [name, setName] = useState('');
@@ -186,8 +187,7 @@ function SignUp() {
           </form>
           <br />
           <div>
-            ログイン画面はこちら
-             {/* ToDo: ログイン画面へのリンク*/}
+            <Link to="/signin">ログイン画面はこちら</Link>
           </div>
           
       </main>
