@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
 import Compressor from 'compressorjs';
 
@@ -44,7 +45,7 @@ function SignUp() {
       }
     }
 
-    const onSignUp = (e) => {
+    const onSignUp = async (e) => {
         e.preventDefault();
         if(!name){
             setNameError('名前を入力してください');
@@ -62,6 +63,58 @@ function SignUp() {
         if(!password){
             setPasswordError('パスワードを入力してください');
             return;
+        }
+
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('password', password);
+        if (icon) {
+          formData.append('icon', icon);
+        }
+        try{
+          const userData = {
+            name: name,
+            email: email,
+            password: password,
+          }
+
+          const responseUser = await axios.post(
+            `${import.meta.env.VITE_API_URL}/users`,
+            userData,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+          console.log('ユーザー情報送信結果: ', responseUser.data);
+          console.log('ユーザー情報送信結果、トークン: ', responseUser.data.token);
+          const token = responseUser.data.token;          
+
+          if (icon) {
+            const formData = new FormData();
+            formData.append('icon', icon);
+    
+            const responseIcon = await axios.post(
+              `${import.meta.env.VITE_API_URL}/uploads`,
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                  'Authorization': `Bearer ${token}`
+                },
+              }
+            );
+            console.log('アイコン送信結果: ', responseIcon.data);
+          }
+        } catch (error) {  
+          console.error('APIリクエスト中にエラー: ', error);
+          if (error.response) {
+            console.error('APIエラー内容:', error.response.data);
+          } else {
+            console.error('API通信エラー:', error);
+          }
         }
     }
     useEffect(() => {
@@ -134,6 +187,7 @@ function SignUp() {
           <br />
           <div>
             ログイン画面はこちら
+             {/* ToDo: ログイン画面へのリンク*/}
           </div>
           
       </main>
