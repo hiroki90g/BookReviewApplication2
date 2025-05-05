@@ -68,7 +68,7 @@ function SignUp() {
       console.error('APIリクエスト中にエラー: ', err);
       if (err.response) {
         console.error('APIエラー内容:', err.response.data);
-        setApiError(`エラーが発生しました：${err.response.data}`);
+        setApiError(`エラーが発生しました：${err.response.data.ErrorMessageJP}（ErrorCode: ${err.response.data.ErrorCode}）`);
       } else {
         console.error('通信エラー:', err.message);
       };
