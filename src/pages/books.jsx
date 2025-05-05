@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSelector, useDispatch } from 'react-redux';
+import { nextPage, prevPage } from '../features/pagination/paginationSlice';
+
 
 function Books() {
   const [books, setBooks] = useState([]);
 	const [apiError, setApiError] = useState('');
+	const dispatch = useDispatch();
+	const offset = useSelector((state) => state.pagination.offset);
+
 	useEffect(() => {
 		const fetchBooks = async () => {
 			try {
 				const response = await axios.get(
-					`${import.meta.env.VITE_API_URL}/public/books?offset=0`,
+					`${import.meta.env.VITE_API_URL}/public/books?offset=${offset}`,
 					{
 						headers: {
 							'Content-Type': 'application/json',
@@ -16,8 +22,7 @@ function Books() {
 					}
 				);
 				
-				setBooks(response.data.slice(0.10));
-				console.log('fetchBooks', books);
+				setBooks(response.data.slice(0, 10));
 			} catch (err) {
 				console.error('APIリクエスト中にエラー: ', err);
 				if (err.response) {
@@ -30,7 +35,7 @@ function Books() {
 		};
 
 		fetchBooks();
-	 },[]);
+	 }, [offset]);
 
 	return (
 		<div className="max-w-3xl mx-auto p-4">
@@ -44,6 +49,21 @@ function Books() {
 					</li>
 				))}
 			</ul>
+			<div className="flex justify-center gap-4 mt-4">
+				<button
+					onClick={() => dispatch(prevPage())}
+					disabled={offset === 0}
+					className="px-4 py-2 bg-gray-300 rounded disabled:opacity-10"
+				>
+					前へ
+				</button>
+				<button
+					onClick={() => dispatch(nextPage())}
+					className="px-4 py-2 bg-gray-300 rounded hover:bg-blue-600"
+				>
+					次へ
+				</button>
+			</div>
 		</div>
 	);
 }
