@@ -28,7 +28,38 @@ function SignIn () {
         if(!password){
             setPasswordError('パスワードを入力してください');
             return;
-        }   
+        }
+
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('password', password);
+        
+        // if (icon) {
+        //   formData.append('icon', icon);
+        // }
+
+        // try{
+        //   const userData = {
+        //     name: name,
+        //     email: email,
+        //     password: password,
+        //   }
+
+        //   const responseUser = await axios.post(
+        //     `${import.meta.env.VITE_API_URL}/users`,
+        //     userData,
+        //     {
+        //       headers: {
+        //         'Content-Type': 'application/json', /////この辺りNA
+        //       },
+        //     }
+        //   );
+        //   console.log('ユーザー情報送信結果: ', responseUser.data);
+        //   console.log('ユーザー情報送信結果、トークン: ', responseUser.data.token);  
+        // } catch(err){
+
+        // };
     };
 
     useEffect(() => {
