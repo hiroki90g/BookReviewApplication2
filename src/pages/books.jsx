@@ -34,7 +34,7 @@ function Books() {
 
 	return (
 		<main>
-			<h2>書籍レビュー一覧</h2>
+			<h2 className="text-3xl font-bold underline text-blue-600">書籍レビュー一覧</h2>
 			<ul>
 				{books.map((book) => (
 					<li key={book.id} className='book'>
