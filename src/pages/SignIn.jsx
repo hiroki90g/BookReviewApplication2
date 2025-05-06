@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
+import { login } from '../features/user/userSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
 function SignIn () {
     const { register, handleSubmit, formState: { errors }} = useForm();
     const [apiError, setApiError] = useState('');
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const onSubmit = async ( date ) => {
         const { email, password } = date;
     try {
@@ -20,6 +25,9 @@ function SignIn () {
           );
           console.log('ユーザー情報送信結果: ', responseUser.data);
           console.log('ユーザー情報送信結果、トークン: ', responseUser.data.token);  
+          dispatch(login(responseUser.data));
+          navigate('/');
+
           setApiError('');
         } catch(err){
             console.error('APIリクエスト中にエラー: ', err);
