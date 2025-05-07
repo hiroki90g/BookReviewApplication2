@@ -1,18 +1,30 @@
-import { BrowserRouter as Router, Routes, Route, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 import Books from './pages/books';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { checkAuth } from './features/user/userSlice';
+import Header from './pages/Header';
 
 function App() {
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+
   return (
-    <BrowserRouter>
+    <Router>
+      <Header  />
       <Routes>
         <Route path="/" element={<Books />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={ isAuthenticated ? <Navigate to="/" /> : <SignUp />} />
+        <Route path="/signin" element={ isAuthenticated ? <Navigate to="/" /> :<SignIn />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 

@@ -2,34 +2,49 @@ import React, { useState } from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
-import { login } from '../features/user/userSlice';
+import { setAuth } from '../features/user/userSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
 function SignIn () {
-    const { register, handleSubmit, formState: { errors }} = useForm();
-    const [apiError, setApiError] = useState('');
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const onSubmit = async ( date ) => {
-        const { email, password } = date;
-    try {
-        const responseUser = await axios.post(
-            `${import.meta.env.VITE_API_URL}/signin`,
-            {email, password},
-            {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            }
-          );
-          console.log('ユーザー情報送信結果: ', responseUser.data);
-          console.log('ユーザー情報送信結果、トークン: ', responseUser.data.token);  
-          dispatch(login(responseUser.data));
-          navigate('/');
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors }} = useForm();
+  const [apiError, setApiError] = useState('');
 
-          setApiError('');
-        } catch(err){
+  const onSubmit = async ( date ) => {
+    const { email, password } = date;
+    try {
+      const responseSigninUser = await axios.post(
+        `${import.meta.env.VITE_API_URL}/signin`,
+        {email, password},
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      const token = responseSigninUser.data.token;
+      console.log('ユーザー情報送信結果: ', responseSigninUser.data);
+      console.log('ユーザー情報送信結果、トークン: ', responseSigninUser.data.token);  
+
+      // const responseGetUser = await axios.get(
+      //   `${import.meta.env.VITE_API_URL}/users`,
+      //   {},
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       'Authorization': `Bearer ${token}`
+      //     },
+      //   }
+      // );
+      // const userName = responseGetUser.data.name;
+      const userName = "hiroki";
+      dispatch(setAuth({ token, userName }));
+      navigate('/');
+      setApiError('');
+
+    } catch(err){
             console.error('APIリクエスト中にエラー: ', err);
             if (err.response) {
                 console.error('APIエラー内容:', err.response.data);
