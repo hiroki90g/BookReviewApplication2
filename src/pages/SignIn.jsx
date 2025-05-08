@@ -27,22 +27,22 @@ function SignIn () {
       const token = responseSigninUser.data.token;
       console.log('ユーザー情報送信結果: ', responseSigninUser.data);
       console.log('ユーザー情報送信結果、トークン: ', responseSigninUser.data.token);  
+      console.log('ユーザー情報送信結果、トークン: ', token);  
 
-      // const responseGetUser = await axios.get(
-      //   `${import.meta.env.VITE_API_URL}/users`,
-      //   {},
-      //   {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       'Authorization': `Bearer ${token}`
-      //     },
-      //   }
-      // );
-      // const userName = responseGetUser.data.name;
-      const userName = "hiroki";
+      const responseGetUser = await axios.get(
+        `${import.meta.env.VITE_API_URL}/users`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        }
+      );
+      setApiError('');
+      console.log('ユーザー情報取得結果: ', responseGetUser.data);
+      const userName = responseGetUser.data.name;
       dispatch(setAuth({ token, userName }));
       navigate('/');
-      setApiError('');
 
     } catch(err){
             console.error('APIリクエスト中にエラー: ', err);
