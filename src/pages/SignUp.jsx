@@ -4,8 +4,13 @@ import { useState } from 'react';
 import Compressor from 'compressorjs';
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form';
+import { setAuth } from '../features/user/userSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors }} = useForm();
     const [icon, setIcon] = useState('');
     const [iconPreviewURL, setIconPreviewURL] = useState(null);
@@ -64,6 +69,20 @@ function SignUp() {
         );
         console.log('アイコン送信結果: ', responseIcon.data);
       }
+      const responseGetUser = await axios.get(
+        `${import.meta.env.VITE_API_URL}/users`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        }
+      );
+      setApiError('');
+      console.log('ユーザー情報取得結果: ', responseGetUser.data);
+      const userName = responseGetUser.data.name;
+      dispatch(setAuth({ token, userName }));
+      navigate('/');
     } catch (err) {  
       console.error('APIリクエスト中にエラー: ', err);
       if (err.response) {
