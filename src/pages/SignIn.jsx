@@ -41,7 +41,8 @@ function SignIn () {
       setApiError('');
       console.log('ユーザー情報取得結果: ', responseGetUser.data);
       const userName = responseGetUser.data.name;
-      dispatch(setAuth({ token, userName }));
+      const iconUrl = responseGetUser.data.iconUrl;
+      dispatch(setAuth({ token, userName, iconUrl }));
       navigate('/');
 
     } catch(err){

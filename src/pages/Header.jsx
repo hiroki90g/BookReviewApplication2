@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { isAuthenticated, userName } = useSelector((state) => state.user);
+  const { isAuthenticated, userName, iconUrl } = useSelector((state) => state.user);
   
   const handleLogout = () => {
     dispatch(removeAuth());
@@ -22,6 +22,13 @@ function Header() {
     
     {isAuthenticated ? (
         <div className="flex items-center gap-4">
+        {iconUrl && (
+          <img
+            src={iconUrl}
+            alt="ユーザーアイコン"
+            className="w-10 h-10 rounded-full object-cover"
+          />
+        )}
           <span>{userName}でログイン中</span>
           <button onClick={handleLogout} className="px-4 py-2 bg-red-500 rounded">
             ログアウト
