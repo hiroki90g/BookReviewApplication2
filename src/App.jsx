@@ -3,6 +3,7 @@ import './App.css';
 import Books from './pages/books';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
+import Profile from './pages/profile';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { checkAuth } from './features/user/userSlice';
@@ -18,11 +19,12 @@ function App() {
 
   return (
     <Router>
-      <Header  />
+      <Header />
       <Routes>
         <Route path="/" element={<Books />} />
         <Route path="/signup" element={ isAuthenticated ? <Navigate to="/" /> : <SignUp />} />
-        <Route path="/signin" element={ isAuthenticated ? <Navigate to="/" /> :<SignIn />} />
+        <Route path="/signin" element={ isAuthenticated ? <Navigate to="/" /> : <SignIn />} />
+        <Route path="/profile" element={ <Profile /> } />
       </Routes>
     </Router>
   );

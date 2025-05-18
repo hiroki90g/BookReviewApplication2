@@ -30,6 +30,9 @@ function Header() {
           />
         )}
           <span>{userName}でログイン中</span>
+          <Link to="/profile" className="text-blue-600 hover:underline">
+          ユーザー情報更新
+          </Link>
           <button onClick={handleLogout} className="px-4 py-2 bg-red-500 rounded">
             ログアウト
           </button>

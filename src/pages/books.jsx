@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
 import { nextPage, prevPage } from '../features/pagination/paginationSlice';
-import Header from '../pages/Header';
 
 
 function Books() {
