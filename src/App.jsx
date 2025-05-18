@@ -24,7 +24,7 @@ function App() {
         <Route path="/" element={<Books />} />
         <Route path="/signup" element={ isAuthenticated ? <Navigate to="/" /> : <SignUp />} />
         <Route path="/signin" element={ isAuthenticated ? <Navigate to="/" /> : <SignIn />} />
-        <Route path="/profile" element={ <Profile /> } />
+        <Route path="/profile" element={ isAuthenticated ? <Profile /> : <Navigate to="/" />} />
       </Routes>
     </Router>
   );
