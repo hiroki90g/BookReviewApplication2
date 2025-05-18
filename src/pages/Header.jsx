@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeAuth } from '../features/user/userSlice';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { flushSync } from 'react-dom';
 
 function Header() {
   const dispatch = useDispatch();
@@ -10,7 +11,9 @@ function Header() {
   const { isAuthenticated, userName, iconUrl } = useSelector((state) => state.user);
   
   const handleLogout = () => {
-    dispatch(removeAuth());
+    flushSync(() => {
+      dispatch(removeAuth());
+     });
     navigate('/signin');
   };
 
