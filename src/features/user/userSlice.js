@@ -30,7 +30,7 @@ const userSlice = createSlice({
       const userName = localStorage.getItem('userName');
       const iconUrl = localStorage.getItem('iconUrl');
       console.log(state);
-      if (token && userName) {
+      if (token && userName) {  // tokenが生きているか、API叩いて判定してログイン済みかみるとよい。認証エラーの場合はトップに戻す
         state.isAuthenticated = true;
         state.token = token;
         state.userName = userName;

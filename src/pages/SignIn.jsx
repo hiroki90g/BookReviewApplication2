@@ -12,8 +12,8 @@ function SignIn () {
   const { register, handleSubmit, formState: { errors }} = useForm();
   const [apiError, setApiError] = useState('');
 
-  const onSubmit = async ( date ) => {
-    const { email, password } = date;
+  const onSubmit = async ( data ) => {
+    const { email, password } = data;
     try {
       const responseSigninUser = await axios.post(
         `${import.meta.env.VITE_API_URL}/signin`,
@@ -59,7 +59,7 @@ function SignIn () {
     return (
         <div>
             <main className="signin">
-                <h2>サインイン</h2>
+                <h2 className="text-2xl font-bold mb-4 text-center">サインイン</h2>
                 <form className="signin-form" onSubmit={handleSubmit(onSubmit)}>
                 <label className="email-label">
                     メールアドレス

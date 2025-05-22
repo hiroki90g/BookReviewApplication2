@@ -4,6 +4,7 @@ import Books from './pages/books';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import Profile from './pages/profile';
+import NewBook from './pages/new';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { checkAuth } from './features/user/userSlice';
@@ -25,6 +26,7 @@ function App() {
         <Route path="/signup" element={ isAuthenticated ? <Navigate to="/" /> : <SignUp />} />
         <Route path="/signin" element={ isAuthenticated ? <Navigate to="/" /> : <SignIn />} />
         <Route path="/profile" element={ isAuthenticated ? <Profile /> : <Navigate to="/" />} />
+        <Route path="/new" element={ isAuthenticated ? <NewBook /> : <NewBook />} />
       </Routes>
     </Router>
   );

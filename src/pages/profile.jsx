@@ -52,7 +52,7 @@ function Profile() {
       );
       console.log('ユーザー情報更新結果:', responsePutUser.data);
       
-      const responseGetUser = await axios.get(
+      const responseGetUser = await axios.get( // put のレスポンスでnameが帰ってくるのでそれを使用できる
         `${import.meta.env.VITE_API_URL}/users`,
         {
           headers: {
@@ -66,7 +66,7 @@ function Profile() {
       const userName = responseGetUser.data.name;
       dispatch(setAuth({ token, userName }));
       navigate('/');
-      setApiError('');
+
     } catch (err) {
       console.error('ユーザー情報更新APIエラー', err);
       setApiError('ユーザー情報の更新に失敗しました');
