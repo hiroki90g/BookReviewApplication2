@@ -1,19 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector, useDispatch } from 'react-redux';
-import { nextPage, prevPage } from '../features/pagination/paginationSlice';
 import { useForm } from 'react-hook-form';
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 function NewBook() {
   const token = useSelector(state => state.user.token);
   const { register, handleSubmit, formState: { errors }} = useForm();
   const [apiError, setApiError] = useState('');
+  const navigate = useNavigate();
 
+  console.log(token);
+  
   const onSubmit = async (data) => {
-    console.log("test", data);
+    const { title, url, detail, review } = data;
+    
+    try {
+      const responsePostBook = await axios.post(
+        `${import.meta.env.VITE_API_URL}/books`,
+        { title, url, detail, review },
+        {
+          headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          },
+        }
+      )
+      alert('書籍レビューを投稿しました');
+      navigate('/');
+    } catch (err){
+      console.log(err);
+      alert('投稿に失敗しました');
+    };
   };
+
 	return (
 		<div className="max-w-3xl mx-auto p-4">
       <main className="new-book">
@@ -22,7 +44,7 @@ function NewBook() {
             <label className="title">
                 タイトル
                 <input 
-                    type="string"
+                    type="text"
                     className="title-input"
                     {...register('title', {
                       required: 'タイトルを入力してください',
@@ -35,7 +57,7 @@ function NewBook() {
             <label className="url">
                 URL
                 <input 
-                    type="string"
+                    type="text"
                     className="url-input"
                     {...register('url', {
                       required: 'URLを入力してください',
@@ -48,7 +70,7 @@ function NewBook() {
             <label className="detail">
                 書籍詳細
                 <input 
-                    type="string"
+                    type="text"
                     className="detail-input"
                     {...register('detail', {
                       required: '書籍詳細を入力してください',
@@ -61,7 +83,7 @@ function NewBook() {
             <label className="review">
                 レビュー
                 <input 
-                    type="string"
+                    type="text"
                     className="review-input"
                     {...register('review', {
                       required: 'レビューを入力してください',
@@ -70,7 +92,7 @@ function NewBook() {
                 />
             </label>            
             {errors.review && <p className="error-message">{errors.review.message}</p>}                        
-            <button type="submit" className="signin-button">サインイン</button>
+            <button type="submit" className="signin-button">投稿</button>
           </form>
           {apiError && <p className="error-message">{apiError}</p>}
           <Link to="/">投稿一覧画面はこちら</Link>

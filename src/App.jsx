@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { checkAuth } from './features/user/userSlice';
 import Header from './pages/Header';
+import BookDetail from './pages/bookDetail';
+import EditBook from './pages/bookEdit'
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +29,8 @@ function App() {
         <Route path="/signin" element={ isAuthenticated ? <Navigate to="/" /> : <SignIn />} />
         <Route path="/profile" element={ isAuthenticated ? <Profile /> : <Navigate to="/" />} />
         <Route path="/new" element={ isAuthenticated ? <NewBook /> : <NewBook />} />
+        <Route path="/detail/:id" element={<BookDetail />} />
+        <Route path="/edit/:id" element={<EditBook />} />
       </Routes>
     </Router>
   );
