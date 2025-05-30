@@ -42,6 +42,7 @@ function SignIn () {
       console.log('ユーザー情報取得結果: ', responseGetUser.data);
       const userName = responseGetUser.data.name;
       const iconUrl = responseGetUser.data.iconUrl;
+      console.log("iconUrl:", responseGetUser.data.iconUrl);
       dispatch(setAuth({ token, userName, iconUrl }));
       navigate('/');
 

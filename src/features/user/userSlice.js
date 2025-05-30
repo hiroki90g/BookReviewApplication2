@@ -4,10 +4,10 @@ import axios from 'axios';
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    isAuthenticated: false,
-    token: null,
-    userName: null,
-    iconUrl: null, 
+    isAuthenticated: !!localStorage.getItem('authToken'),
+    token: localStorage.getItem('authToken'),
+    userName: localStorage.getItem('userName'),
+    iconUrl: localStorage.getItem('iconUrl'), 
   },
   reducers: {
     setAuth: (state, action) => {
@@ -22,6 +22,7 @@ const userSlice = createSlice({
       state.isAuthenticated = false;
       state.token = null;
       state.userName = null;
+      state.iconUrl = null;
       localStorage.removeItem('authToken');
       localStorage.removeItem('userName');
       localStorage.removeItem('iconUrl'); 
@@ -42,13 +43,13 @@ const checkAuth = () => async (dispatch) => {
           'Authorization': `Bearer ${token}`
       },
     });
-    
+    console.log("User data:", responseGetUser.data);
     dispatch(setAuth({
       token,
       userName: responseGetUser.data.userName,
       iconUrl: responseGetUser.data.iconUrl,
     }));
-    
+
   } catch (err) {
     console.error("Token validation failed", err);
     dispatch(removeAuth());

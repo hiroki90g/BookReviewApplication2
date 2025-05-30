@@ -9,6 +9,7 @@ function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isAuthenticated, userName, iconUrl } = useSelector((state) => state.user);
+  console.log("iconUrl in Header:", iconUrl);
   
   const handleLogout = () => {
     flushSync(() => {
@@ -16,6 +17,7 @@ function Header() {
      });
     navigate('/signin');
   };
+  console.log("iconUrl in Header:", iconUrl);
 
   return (
     <header className="bg-gray-100 p-4 flex justify-between items-center">
