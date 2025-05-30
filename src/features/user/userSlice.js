@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import axios from 'axios';
 
 const userSlice = createSlice({
   name: 'user',
@@ -25,20 +26,35 @@ const userSlice = createSlice({
       localStorage.removeItem('userName');
       localStorage.removeItem('iconUrl'); 
     },
-    checkAuth: (state) => {
-      const token = localStorage.getItem('authToken');
-      const userName = localStorage.getItem('userName');
-      const iconUrl = localStorage.getItem('iconUrl');
-      console.log(state);
-      if (token && userName) {  // tokenが生きているか、API叩いて判定してログイン済みかみるとよい。認証エラーの場合はトップに戻す
-        state.isAuthenticated = true;
-        state.token = token;
-        state.userName = userName;
-        state.iconUrl = iconUrl;
-      }
-    },
   },
 });
 
-export const { setAuth, removeAuth, checkAuth } = userSlice.actions;
+const checkAuth = () => async (dispatch) => {
+  const token = localStorage.getItem('authToken');
+  if (!token) return dispatch(removeAuth());
+  
+  try {
+    const responseGetUser = await axios.get(
+      `${import.meta.env.VITE_API_URL}/users`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+      },
+    });
+    
+    dispatch(setAuth({
+      token,
+      userName: responseGetUser.data.userName,
+      iconUrl: responseGetUser.data.iconUrl,
+    }));
+    
+  } catch (err) {
+    console.error("Token validation failed", err);
+    dispatch(removeAuth());
+  }
+};
+
+export const { setAuth, removeAuth} = userSlice.actions;
 export default userSlice.reducer;
+export { checkAuth };

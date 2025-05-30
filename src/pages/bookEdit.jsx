@@ -33,7 +33,7 @@ function BookEdit(){
           url: responseGetBook.data.url,
           detail: responseGetBook.data.detail,
           review: responseGetBook.data.review,
-        }); //ここでエラーになるの解消するい
+        });
 
       } catch (err) {
         setApiError('書籍取得に失敗しました');

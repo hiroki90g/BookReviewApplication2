@@ -6,7 +6,7 @@ import SignIn from './pages/SignIn';
 import Profile from './pages/profile';
 import NewBook from './pages/new';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { checkAuth } from './features/user/userSlice';
 import Header from './pages/Header';
 import BookDetail from './pages/bookDetail';
@@ -15,10 +15,19 @@ import EditBook from './pages/bookEdit'
 function App() {
   const dispatch = useDispatch();
   const { isAuthenticated } = useSelector((state) => state.user);
+  const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
-    dispatch(checkAuth());
+    const initAuth = async () => {
+      await dispatch(checkAuth());
+      setAuthChecked(true); 
+    };
+    initAuth();
   }, [dispatch]);
+
+  if (!authChecked) {
+    return <div>認証情報を確認中...</div>;
+  }
 
   return (
     <Router>

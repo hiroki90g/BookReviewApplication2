@@ -11,30 +11,31 @@ function Books() {
 	const [apiError, setApiError] = useState('');
 	const offset = useSelector((state) => state.pagination.offset);
 
-	useEffect(() => {
-		const fetchBooks = async () => {
-			try {
-				const response = await axios.get(
-					`${import.meta.env.VITE_API_URL}/public/books?offset=${offset}`,
-					{
-						headers: {
-							'Content-Type': 'application/json',
-						},
-					}
-				);
-				
-				setBooks(response.data.slice(0, 10));
-			} catch (err) {
-				console.error('APIリクエスト中にエラー: ', err);
-				if (err.response) {
-					console.error('APIエラー内容:', err.response.data);
-					setApiError(`エラーが発生しました：${err.response.data.errMessageJP}（errCode: ${err.response.data.errCode}）`);
-				} else {
-					console.error('通信エラー:', err.message);
+	const fetchBooks = async () => {
+		try {
+			const response = await axios.get(
+				`${import.meta.env.VITE_API_URL}/books?offset=${offset}`,
+				{
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${token}`,
+					},
 				}
-			};
+			);
+			
+			setBooks(response.data.slice(0, 10));
+		} catch (err) {
+			console.error('APIリクエスト中にエラー: ', err);
+			if (err.response) {
+				console.error('APIエラー内容:', err.response.data);
+				setApiError(`エラーが発生しました：${err.response.data.errMessageJP}（errCode: ${err.response.data.errCode}）`);
+			} else {
+				console.error('通信エラー:', err.message);
+			}
 		};
+	};
 
+	useEffect(() => {
 		fetchBooks();
 	 }, [offset]);
 
@@ -58,6 +59,28 @@ function Books() {
 		};
 	 }
 
+	 const handleDeleteBook = async (deleteBookId) => {
+		const delete_confirm = window.confirm("削除しますか？");
+		if (!delete_confirm) return;
+	
+		try {
+			await axios.delete(
+				`${import.meta.env.VITE_API_URL}/books/${deleteBookId}`,
+				{
+					headers: {
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${token}`,
+					},
+				}
+			);
+			console.log('削除成功');
+			await fetchBooks();
+		} catch (err) {
+			console.error('削除に失敗しました', err);
+			alert('削除に失敗しました');
+		}
+	};
+
 	return (
 		<div className="max-w-3xl mx-auto p-4">
 			<h2 className="text-2xl font-bold mb-4 text-center">書籍レビュー一覧</h2>
@@ -71,6 +94,18 @@ function Books() {
 								{book.title}
 							</span>
 						</h3>
+						{book.isMine && (
+							<p className="text-sm text-gray-500 mt-2">
+								<Link to={`/edit/${book.id}`}>編集はこちら</Link>
+							</p>
+						)}
+						{book.isMine && (
+							<p className="text-sm text-gray-500 mt-2">
+								 <button onClick={() => handleDeleteBook(book.id)} className="text-red-500 hover:underline">
+      							削除はこちら
+								</button>
+							</p>
+						)}
 						<p className="text-sm text-gray-500 mt-2">投稿者：{book.reviewer}</p>
 					</li>
 				))}
