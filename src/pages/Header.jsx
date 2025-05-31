@@ -27,12 +27,16 @@ function Header() {
     
     {isAuthenticated ? (
         <div className="flex items-center gap-4">
-        {iconUrl && (
+        {iconUrl ? (
           <img
             src={iconUrl}
-            alt="ユーザーアイコン"
+            alt={`${userName}のアイコン`}
+            width="40"
+            height="40"
             className="w-10 h-10 rounded-full object-cover"
           />
+        ) : (
+          <div style={{ width: '40px', height: '40px' }} className="rounded-full bg-gray-200 animate-pulse" />
         )}
           <span>{userName}でログイン中</span>
           <Link to="/profile" className="text-blue-600 hover:underline">

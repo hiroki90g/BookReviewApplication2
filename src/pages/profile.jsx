@@ -6,6 +6,7 @@ import { setAuth } from '../features/user/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 
+
 function Profile() {
   const token = useSelector(state => state.user.token);
   const { register, handleSubmit, reset, formState: { errors }} = useForm({defaultValues: { name: '' }});  
