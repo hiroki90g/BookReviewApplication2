@@ -46,7 +46,7 @@ const checkAuth = () => async (dispatch) => {
     console.log("User data:", responseGetUser.data);
     dispatch(setAuth({
       token,
-      userName: responseGetUser.data.userName,
+      userName: responseGetUser.data.name,
       iconUrl: responseGetUser.data.iconUrl,
     }));
 

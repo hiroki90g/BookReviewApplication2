@@ -54,6 +54,7 @@ function Books() {
 			console.log('ログを送信しました');
     } catch (err){
       console.log('ログを送信できませんでした', err);
+			setApiError(`エラーが発生しました：${err.response.data.errMessageJP}（errCode: ${err.response.data.errCode}）`);
     }	finally {
 			navigate(`/detail/${selectBookId}`);
 		};
@@ -77,6 +78,7 @@ function Books() {
 			await fetchBooks();
 		} catch (err) {
 			console.error('削除に失敗しました', err);
+			setApiError(`エラーが発生しました：${err.response.data.errMessageJP}（errCode: ${err.response.data.errCode}）`);
 			alert('削除に失敗しました');
 		}
 	};

@@ -18,6 +18,7 @@ function Header() {
     navigate('/signin');
   };
   console.log("iconUrl in Header:", iconUrl);
+  console.log("userName in Header:", userName);
 
   return (
     <header className="bg-gray-100 p-4 flex justify-between items-center">

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import axios from 'axios';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ function NewBook() {
     const { title, url, detail, review } = data;
     
     try {
-      const responsePostBook = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_API_URL}/books`,
         { title, url, detail, review },
         {
@@ -33,6 +33,7 @@ function NewBook() {
     } catch (err){
       console.log(err);
       alert('投稿に失敗しました');
+      setApiError(`エラーが発生しました：${err.response.data.ErrorMessageJP}（ErrorCode: ${err.response.data.ErrorCode}）`);
     };
   };
 
